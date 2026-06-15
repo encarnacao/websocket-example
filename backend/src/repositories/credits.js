@@ -92,7 +92,7 @@ export async function getPendingTransactions() {
       `
       SELECT
         th.txn_id,
-        u.username,
+        u.name,
         th.amount
       FROM transaction_history th
       JOIN users u ON th.user_id = u.id
