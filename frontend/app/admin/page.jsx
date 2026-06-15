@@ -1,3 +1,5 @@
+"use client";
+
 import { Container, Shell, Title } from "../../css/admin";
 import AdminCard from "../../components/admin-card";
 export default function Page() {

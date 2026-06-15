@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, Eyebrow, Meta, Shell } from "../css/login";
+import { Card, Eyebrow, Meta, Shell } from "../css/main";
 import { MoveRight } from "lucide-react";
 import { Button, TextBox } from "../css/common";
 import { useState, useContext } from "react";

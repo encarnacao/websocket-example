@@ -1,4 +1,5 @@
-import { Card, UserName, Pill, AcceptButton, RejectButton } from "../css/admin";
+import { Card, UserName, Pill } from "../css/admin";
+import { AcceptButton, RejectButton } from "../css/common";
 import { Coins, Check, X } from "lucide-react";
 
 export default function AdminCard(args) {
