@@ -1,0 +1,25 @@
+import { Router } from "express";
+import {
+  getPendingTransactions,
+  updateCredits,
+} from "../repositories/credits.js";
+
+export const adminRouter = Router();
+
+adminRouter.get("/pending-transactions", async (req, res) => {
+  const transactions = await getPendingTransactions();
+  res.status(200).json({ transactions });
+});
+
+adminRouter.post("/update-transaction", async (req, res) => {
+  const { txnId, approved } = req.body;
+  if (!txnId || typeof approved !== "boolean") {
+    return res.status(400).json({ error: "txnId e approved são obrigatórios" });
+  }
+  const success = await updateCredits(txnId, approved);
+  if (success) {
+    res.status(200).json({ message: "Transação atualizada com sucesso" });
+  } else {
+    res.status(500).json({ error: "Erro ao atualizar transação" });
+  }
+});
