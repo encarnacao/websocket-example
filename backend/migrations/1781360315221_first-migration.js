@@ -2,7 +2,6 @@ export const up = (pgm) => {
   pgm.createTable("users", {
     id: "id",
     name: { type: "varchar", unique: true, notNull: true },
-    websocket_id: { type: "varchar", unique: true, notNull: false },
     created_at: {
       type: "timestamp",
       notNull: true,
@@ -14,7 +13,6 @@ export const up = (pgm) => {
       default: pgm.func("current_timestamp"),
     },
   });
-  pgm.createIndex("users", "websocket_id");
   pgm.createIndex("users", "name");
   pgm.createTable("credits", {
     id: "id",

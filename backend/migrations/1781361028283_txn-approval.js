@@ -10,7 +10,7 @@ export const shorthands = undefined;
  */
 export const up = (pgm) => {
   pgm.addColumn("transaction_history", {
-    approved: { type: "boolean", notNull: true, default: false },
+    status: { type: "varchar", notNull: true, default: "pending" },
     txn_id: { type: "varchar", notNull: true, unique: true },
   });
   pgm.createIndex("transaction_history", "txn_id");
