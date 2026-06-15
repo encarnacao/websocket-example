@@ -33,6 +33,15 @@ export const Meta = styled.div`
   justify-content: space-evenly;
 `;
 
+export const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  justify-content: space-evenly;
+`;
+
 export const Pill = styled.span`
   padding: 10px 14px;
   border: 1px solid var(--border);

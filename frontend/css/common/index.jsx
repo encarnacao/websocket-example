@@ -1,2 +1,2 @@
-export { default as Button } from "./button";
-export { default as TextBox } from "./text-box";
+export * from "./buttons";
+export * from "./text-box";

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const TextBox = styled.input`
+export const TextBox = styled.input`
   width: 80%;
   border: 1px solid rgba(248, 248, 242, 0.14);
   border-radius: 14px;
@@ -32,5 +32,3 @@ const TextBox = styled.input`
     opacity: 0.65;
   }
 `;
-
-export default TextBox;
