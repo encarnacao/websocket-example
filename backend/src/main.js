@@ -1,4 +1,3 @@
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import http from "http";
@@ -9,8 +8,6 @@ import {
   creditsRouter,
   userRouter,
 } from "./routes/index.js";
-
-dotenv.config({ quiet: true });
 
 const app = express();
 const server = http.createServer(app);
