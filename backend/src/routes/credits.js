@@ -21,7 +21,7 @@ creditsRouter.post("/", async (req, res) => {
       res.status(500).json({ error: "Erro ao adicionar créditos" });
     }
   } else {
-    const { txnId, newBalance } = await removeCreditsTxn(userId, amount);
+    const { txnId, newBalance } = await removeCreditsTxn(userId, -amount);
 
     if (txnId && newBalance !== undefined) {
       emitCreditUpdate(userId, newBalance);

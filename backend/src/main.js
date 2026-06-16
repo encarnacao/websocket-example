@@ -21,7 +21,7 @@ io.on("connection", async (socket) => {
   console.log(`Usuário conectado: ${userId} (socket ID: ${socket.id})`);
   socket.join(`user:${userId}`);
   const userCredits = await getUserCredits(userId);
-  socket.emit("creditUpdate", { amount: userCredits });
+  socket.emit("creditUpdate", { amount: userCredits || 1000 });
 
   socket.on("disconnect", () => {
     console.log(`Usuário desconectado: ${userId} (socket ID: ${socket.id})`);
