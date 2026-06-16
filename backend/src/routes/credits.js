@@ -1,7 +1,6 @@
 import { removeCreditsTxn, addCreditsTxn } from "../repositories/credits.js";
 import { Router } from "express";
 import { emitCreditUpdate } from "../main.js";
-import { emitCreditUpdate } from "../main.js";
 
 export const creditsRouter = Router();
 
