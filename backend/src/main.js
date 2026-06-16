@@ -40,6 +40,6 @@ app
   .use("/credits", creditsRouter)
   .use("/user", userRouter);
 
-app.listen(process.env.PORT || 3001, () => {
+server.listen(process.env.PORT || 3001, () => {
   console.log(`Server is running on port ${process.env.PORT || 3001}`);
 });
