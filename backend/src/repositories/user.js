@@ -11,6 +11,10 @@ export async function getUser(username) {
         "INSERT INTO users (name) VALUES ($1) RETURNING *",
         [username],
       );
+      await client.query(
+        "INSERT INTO credits (user_id, amount) VALUES ($1, $2)",
+        [newUser.rows[0].id, 1000],
+      );
       return newUser.rows[0];
     }
     return user.rows[0];
