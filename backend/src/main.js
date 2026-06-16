@@ -8,6 +8,7 @@ import {
   creditsRouter,
   userRouter,
 } from "./routes/index.js";
+import { getUserCredits } from "./repositories/credits.js";
 
 const app = express();
 const server = http.createServer(app);
@@ -15,11 +16,12 @@ const io = new Server(server, {
   cors: { origin: "*" },
 });
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
   console.log(`Usuário conectado: ${userId} (socket ID: ${socket.id})`);
-
   socket.join(`user:${userId}`);
+  const userCredits = await getUserCredits(userId);
+  socket.emit("creditUpdate", { amount: userCredits });
 
   socket.on("disconnect", () => {
     console.log(`Usuário desconectado: ${userId} (socket ID: ${socket.id})`);
