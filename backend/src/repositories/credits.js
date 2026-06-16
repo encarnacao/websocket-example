@@ -7,7 +7,7 @@ export async function getUserCredits(userId) {
     const result = await client.query(
       `
       SELECT
-        credits
+        amount AS credits
       FROM credits
       WHERE user_id = $1;
       `,
@@ -50,9 +50,9 @@ export async function addCreditsTxn(userId, amount) {
 export async function updateCredits(txnId, approved) {
   const client = await pgPool.connect();
   try {
-    const txnResult = await client.query("BEGIN;");
+    await client.query("BEGIN;");
     if (approved) {
-      const txn = await client.query(
+      const { rows: txnRows } = await client.query(
         `UPDATE transaction_history
          SET status = 'approved'
          WHERE txn_id = $1
@@ -62,11 +62,16 @@ export async function updateCredits(txnId, approved) {
       await client.query(
         `
         UPDATE credits
-        SET credits = credits + $1
+        SET amount = amount + $1
         WHERE user_id = $2;
         `,
-        [txn.rows[0].amount, txn.rows[0].user_id],
+        [txnRows[0].amount, txnRows[0].user_id],
       );
+      const { rows } = await client.query(
+        "SELECT amount FROM credits WHERE user_id = $1;",
+        [txnRows[0].user_id],
+      );
+      return { newBalance: rows[0].amount, userId: txnRows[0].user_id };
     } else {
       await client.query(
         `UPDATE transaction_history
@@ -75,10 +80,11 @@ export async function updateCredits(txnId, approved) {
         [txnId],
       );
     }
+    return {};
   } catch (err) {
     console.error("Erro ao atualizar créditos do usuário:", err);
     await client.query("ROLLBACK;");
-    return false;
+    return {};
   } finally {
     await client.query("COMMIT;");
     client.release();
@@ -120,11 +126,11 @@ export async function removeCreditsTxn(userId, amount) {
     `,
       [userId, "debit", -amount, txnId],
     );
-    await client.query(
-      `UPDATE credits SET credits = credits - $1 WHERE user_id = $2;`,
+    const { rows } = await client.query(
+      `UPDATE credits SET amount = amount - $1 WHERE user_id = $2 returning amount;`,
       [amount, userId],
     );
-    return txnId;
+    return { txnId, newBalance: rows[0].amount };
   } catch (err) {
     console.error("Erro ao remover créditos do usuário:", err);
     await client.query("ROLLBACK;");

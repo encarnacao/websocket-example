@@ -3,6 +3,7 @@ import {
   getPendingTransactions,
   updateCredits,
 } from "../repositories/credits.js";
+import { emitCreditUpdate } from "../main.js";
 
 export const adminRouter = Router();
 
@@ -16,8 +17,9 @@ adminRouter.post("/update-transaction", async (req, res) => {
   if (!txnId || typeof approved !== "boolean") {
     return res.status(400).json({ error: "txnId e approved são obrigatórios" });
   }
-  const success = await updateCredits(txnId, approved);
-  if (success) {
+  const { newBalance, userId } = await updateCredits(txnId, approved);
+  if (newBalance && userId) {
+    emitCreditUpdate(userId, newBalance);
     res.status(200).json({ message: "Transação atualizada com sucesso" });
   } else {
     res.status(500).json({ error: "Erro ao atualizar transação" });
