@@ -15,6 +15,8 @@ Este é um projeto para a exemplificação das diferenças de comunicação entr
 - `frontend/`: Contém o código do cliente Next.js.
 - `compose.yml`: Configuração do Docker Compose para orquestrar os serviços.
 
+Demais arquivos na raiz do projeto incluem a configuração de um `.editorconfig` para a padronização e um `.nvmrc` para definir a versão do Node.js utilizada no projeto.
+
 ## Funcionalidades
 
 O funcionamento do projeto é bem simples, sem muitas implementações desnecessárias, como uma autenticação com senhas, ou até mesmo middlewares para tratamento de erros. O foco é fazer uma aplicação mínima de uma questão real, que é a atualização em tempo real do saldo de créditos de um usuário, a partir de pedidos feitos por ele, e aprovados ou rejeitados.
