@@ -1,12 +1,40 @@
 services:
   postgres:
-    image: postgres:alpine
-    env_file: .env
+    image: postgres:16-alpine
+    env_file:
+      - ./backend/.env
     volumes:
-      - db-data:/dev/shm
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     restart: unless-stopped
 
+  ws-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/postgres
+      POSTGRES_HOST: postgres
+    depends_on:
+      - postgres
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+
+  ws-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - ws-backend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
 volumes:
-  db-data:
+  postgres-data:
