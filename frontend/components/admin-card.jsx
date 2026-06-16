@@ -6,7 +6,7 @@ export default function AdminCard(args) {
   function handleRequest(action) {
     async function sendRequest() {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/admin/update-transaction`,
+        `${process.env.NEXT_PUBLIC_API_URL}/admin/pending-transaction`,
         {
           method: "POST",
           headers: {

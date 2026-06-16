@@ -31,7 +31,7 @@ export default function Page() {
   function handleAddCredits() {
     async function requestAddCredits() {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/credits/add`,
+        `${process.env.NEXT_PUBLIC_API_URL}/credits`,
         {
           method: "POST",
           headers: {
@@ -51,13 +51,13 @@ export default function Page() {
   function handleRemoveCredits() {
     async function requestRemoveCredits() {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/credits/remove`,
+        `${process.env.NEXT_PUBLIC_API_URL}/credits`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount: 100, userId: user.userId }),
+          body: JSON.stringify({ amount: -100, userId: user.userId }),
         },
       );
       console.log(response.json());

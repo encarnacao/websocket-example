@@ -12,7 +12,7 @@ adminRouter.get("/pending-transactions", async (req, res) => {
   res.status(200).json({ transactions });
 });
 
-adminRouter.post("/update-transaction", async (req, res) => {
+adminRouter.post("/pending-transactions", async (req, res) => {
   const { txnId, approved } = req.body;
   if (!txnId || typeof approved !== "boolean") {
     return res.status(400).json({ error: "txnId e approved são obrigatórios" });
