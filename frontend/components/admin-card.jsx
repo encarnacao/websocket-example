@@ -8,7 +8,7 @@ export default function AdminCard(args) {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/admin/pending-transaction`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
