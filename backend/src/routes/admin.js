@@ -18,7 +18,9 @@ adminRouter.put("/pending-transaction", async (req, res) => {
     return res.status(400).json({ error: "txnId e approved são obrigatórios" });
   }
   const { newBalance, userId } = await updateCredits(txnId, approved);
-  if (newBalance && userId) {
+  if (!approved) {
+    res.status(200).json({ message: "Transação rejeitada com sucesso" });
+  } else if (newBalance && userId && approved) {
     emitCreditUpdate(userId, newBalance);
     res.status(200).json({ message: "Transação atualizada com sucesso" });
   } else {
