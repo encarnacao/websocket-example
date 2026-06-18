@@ -1,6 +1,6 @@
 import { removeCreditsTxn, addCreditsTxn } from "../repositories/credits.js";
 import { Router } from "express";
-import { emitCreditUpdate } from "../main.js";
+import { emitCreditUpdate, emitAdminUpdate } from "../websocket.js";
 
 export const creditsRouter = Router();
 
@@ -13,6 +13,7 @@ creditsRouter.post("/", async (req, res) => {
   }
   if (amount > 0) {
     const txnId = await addCreditsTxn(userId, amount);
+    await emitAdminUpdate();
     if (txnId) {
       res
         .status(200)

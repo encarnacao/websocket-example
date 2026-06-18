@@ -3,7 +3,7 @@ import {
   getPendingTransactions,
   updateCredits,
 } from "../repositories/credits.js";
-import { emitCreditUpdate } from "../main.js";
+import { emitCreditUpdate } from "../websocket.js";
 
 export const adminRouter = Router();
 
