@@ -23,6 +23,12 @@ io.on("connection", async (socket) => {
   const userCredits = await getUserCredits(userId);
   socket.emit("creditUpdate", { amount: userCredits || 1000 });
 
+  socket.on("ping", (data) => {
+    console.log(
+      `Ping recebido do usuário ${userId} com timestamp: ${data.timestamp}`,
+    );
+    socket.emit("pong", { timestamp: data.timestamp });
+  });
   socket.on("disconnect", () => {
     console.log(`Usuário desconectado: ${userId} (socket ID: ${socket.id})`);
   });

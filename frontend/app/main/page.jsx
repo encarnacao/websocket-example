@@ -1,32 +1,45 @@
 "use client";
 
-import { Card, Eyebrow, Pill, MainContainer, Shell } from "../../css/main";
-import { AcceptButton, RejectButton } from "../../css/common";
+import {
+  Card,
+  Eyebrow,
+  Pill,
+  MainContainer,
+  Shell,
+  StyledToast,
+} from "../../css/main";
+import { AcceptButton, RejectButton, GenericButton } from "../../css/common";
 import { Coins } from "lucide-react";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { useUser } from "../providers";
 import { io } from "socket.io-client";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Page() {
   const { user } = useUser();
   const [coins, setCoins] = useState(0);
   const router = useRouter();
+  const socketRef = useRef(null);
   useEffect(() => {
     if (!user) {
       router.push("/");
     } else {
-      const socket = io(process.env.NEXT_PUBLIC_API_URL, {
+      socketRef.current = io(process.env.NEXT_PUBLIC_API_URL, {
         query: { userId: user.userId },
       });
+      const socket = socketRef.current;
       socket.on("creditUpdate", (data) => {
         setCoins(data.amount);
+      });
+      socket.on("pong", (data) => {
+        toast(`Pong recebido! Latência: ${Date.now() - data.timestamp}ms`);
       });
       return () => {
         socket.disconnect();
       };
     }
-  }, [user?.username]);
+  }, [user?.userId]);
 
   function handleAddCredits() {
     async function requestAddCredits() {
@@ -40,7 +53,7 @@ export default function Page() {
           body: JSON.stringify({ amount: 100, userId: user.userId }),
         },
       );
-      console.log(response.json());
+      console.log(await response.json());
       if (!response.ok) {
         console.error("Erro ao adicionar créditos:", response.statusText);
       }
@@ -60,12 +73,19 @@ export default function Page() {
           body: JSON.stringify({ amount: -100, userId: user.userId }),
         },
       );
-      console.log(response.json());
+      console.log(await response.json());
       if (!response.ok) {
         console.error("Erro ao remover créditos:", response.statusText);
       }
     }
     requestRemoveCredits();
+  }
+
+  function pingFunction() {
+    const socket = socketRef.current;
+    if (!socket) return;
+    const startTime = Date.now();
+    socket.emit("ping", { timestamp: startTime });
   }
 
   return (
@@ -90,8 +110,10 @@ export default function Page() {
           <RejectButton onClick={handleRemoveCredits}>
             Remover créditos
           </RejectButton>
+          <GenericButton onClick={pingFunction}>Ping</GenericButton>
         </MainContainer>
       </Card>
+      <StyledToast />
     </Shell>
   );
 }

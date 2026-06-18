@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
 
 export const Shell = styled.main`
   min-height: 100vh;
@@ -49,4 +50,27 @@ export const Pill = styled.span`
   background: rgba(255, 255, 255, 0.03);
   color: var(--text);
   font-size: 0.92rem;
+`;
+
+export const StyledToast = styled(ToastContainer)`
+  &&&.Toastify__toast-container {
+    width: min(100%, 420px);
+  }
+
+  .Toastify__toast {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(18px);
+  }
+
+  .Toastify__toast-body {
+    padding: 4px 0;
+  }
+
+  .Toastify__progress-bar {
+    background: var(--cyan);
+  }
 `;
